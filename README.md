@@ -4,6 +4,17 @@
 
 Autor - Guillermo Rodriguez Moraga
 
+Version 0.2.1
+- Ejercicio 3
+    - Fichero js/vs.js
+        - Se han añadido mas categorias, movies, series, actores y directores al sistema
+
+Version 0.2
+- Ejercicio 3
+    - Fichero js/vs.js
+        - Se ha creado la funcion showProduction
+            - Muestra la informacion de una produccion
+
 Version 0.1
 - Ejercicio 3
     - Fichero video.html
