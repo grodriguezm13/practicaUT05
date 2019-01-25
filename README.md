@@ -1,2 +1,53 @@
-# practicaUT05
-Práctica Unidad 05 DOM
+# UT05 DOM
+
+## Introduction
+
+Autor - Guillermo Rodriguez Moraga
+
+Version 0.1
+- Ejercicio 3
+    - Fichero video.html
+        - Se ha creado una pagina HTML con el esqueleto
+
+    - Fichero js/vs.js
+        - Se ha creado la funcion initPopulate
+            - Inicializa y crea los objetos necesarios de la pagina
+        - Se ha creado la funcion showHomePage
+            - Muestra las categorias del sistema en la parte central de la pagina
+        - Se ha creado la funcion categoriesMenuPopulate
+            - Muestra un menu lateral en la pagina con las categorias del sistema
+        - Se ha creado showProductions
+            - Elimina cualquiera contenido de la zona principal para poner la informacion de las producciones de una categoria
+        - Se ha creado la funcion init
+            - Llama a las funciones necesarias para arrancar el sistema
+
+Version 0.0.4
+- Ejercicio 3
+    - Se ha creado el fichero js/vs.js
+
+Version 0.0.3
+- Ejercicio 1
+    - Se ha creado el fichero js/ejercicios.js
+
+Version 0.0.2
+- Ejercicio 2
+    - Se ha creado el fichero js/main.js y las funciones de la pagina
+
+Version 0.0.1
+- Se ha creado el sistema de carpetas:
+    - Ejercicio 1
+        - css
+        - images
+        - js
+        layout.hmtl
+
+    - Ejercicio 2
+        - css
+        - js
+        Ejercicio2.html
+
+    - Ejercicio 3
+        - css
+        - images
+        - js
+        video.html

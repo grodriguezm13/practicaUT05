@@ -1,0 +1,21 @@
+body {
+    padding-top: 80px;
+  }
+  
+  @media (min-width: 992px) {
+    body {
+      padding-top: 82px;
+    }
+  }
+
+  span.card-text {
+    position: absolute;
+    top: 8px;
+    right: -9px;
+    font-size: 18px;
+    color: white;
+    border: 3px solid #0e0f0f;
+    background-color: #343a40;
+    padding: 0 10px;
+    border-radius: 15px;
+}
