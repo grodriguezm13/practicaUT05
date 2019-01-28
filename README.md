@@ -4,7 +4,11 @@
 
 Autor - Guillermo Rodriguez Moraga
 
-
+Version 0.2.3
+- Ejercicio 3
+    - Fichero js/vs.js
+        - Se han añadido las funciones showActor y showDirector
+        - Se ha corregido un error que evitaba que se pudiera pulsar opciones del menu al estar en una produccion
 
 Version 0.2.2
 - Ejercicio 3

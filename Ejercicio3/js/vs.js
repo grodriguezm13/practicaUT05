@@ -375,12 +375,12 @@ function showActors(){
 		//id que sirve para recoger la produccion pulsada en el evento
 		buttonTitle.setAttribute("id","botonActor");
 		buttonTitle.setAttribute("type","button");
-		buttonTitle.setAttribute("value",actor.value.name);
-		buttonTitle.setAttribute("class","btn btn-link btn-lg btn-block");
 		var nombre = actor.value.name+" "+actor.value.lastName1;
 		if (actor.value.lastName2 != null) {
 			nombre += " " + actor.value.lastName2
 		}
+		buttonTitle.setAttribute("value",nombre);
+		buttonTitle.setAttribute("class","btn btn-link btn-lg btn-block");
 		buttonTitle.appendChild(document.createTextNode(nombre));	
 		var valoracion = document.createElement("div");
 		valoracion.setAttribute("class","card-footer");
@@ -461,14 +461,14 @@ function showDirectors(){
 		imagen.setAttribute("alt",director.value.name);
 		var buttonTitle = document.createElement("button");
 		//id que sirve para recoger la produccion pulsada en el evento
-		buttonTitle.setAttribute("id","botonActor");
+		buttonTitle.setAttribute("id","botonDirector");
 		buttonTitle.setAttribute("type","button");
-		buttonTitle.setAttribute("value",director.value.name);
-		buttonTitle.setAttribute("class","btn btn-link btn-lg btn-block");
 		var nombre = director.value.name+" "+director.value.lastName1;
 		if (director.value.lastName2 != null) {
 			nombre += " " + director.value.lastName2
 		}
+		buttonTitle.setAttribute("value",nombre);
+		buttonTitle.setAttribute("class","btn btn-link btn-lg btn-block");
 		buttonTitle.appendChild(document.createTextNode(nombre));	
 		var valoracion = document.createElement("div");
 		valoracion.setAttribute("class","card-footer");
@@ -497,13 +497,202 @@ function showDirectors(){
 
 //Dado un actor muestra toda su información relacionada, incluida sus producciones.
 function showActor(){
+	//Quita el titulo de la zona
+	var tituloContenido = document.getElementById("tituloZona");
+	tituloContenido.innerHTML = this.value;
 
-} 
+	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
+	var migas = document.getElementById("breadcrumb");
+	//Se quita al ultimo enlace la clase active
+	migas.lastChild.setAttribute("class","breadcrumb-item");
+	var actual = document.createElement("li");
+	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("aria-current","page");
+	actual.appendChild(document.createTextNode(this.value));
+	migas.appendChild(actual);
+
+	//Se selecciona la zona donde va a ir el nuevo contenido
+	var contenido = document.getElementById("tarjetasZona");
+	//QUITA TODO EL CONTENIDO QUE HAYA EN LA VARIABLE CONTENIDO
+	while (contenido.firstChild) {
+		contenido.removeChild(contenido.firstChild);
+	}
+
+	//SE PONE EL NUEVO CONTENIDO QUE TIENE QUE SER LA PRODUCCION SELECCIONADA
+	//Recuperamos del array de actores el objeto person que tenga el mismo nombre apellidos que el seleccionado
+	var encontrado = false;
+	var actores = video.actors;
+	var actor = actores.next();
+	while ((actor.done !== true) && (!encontrado)){
+		//Si coincide el name, lastName1 y lastName2 con el this.value es el actor seleccionado
+		var nombreCompleto = actor.value.name +" "+ actor.value.lastName1;
+		if (actor.value.lastName2 != null) {
+			nombreCompleto += " " + actor.value.lastName2
+		}
+		if (nombreCompleto == this.value){
+			//Si coincide nombre de la produccion con el valor del boton muestra la informacion
+			//Crea las tarjetas de las producciones en la zona central
+			var tarjeta = document.createElement("div");
+			tarjeta.setAttribute("class","col-lg-12 col-md-12 mb-4");
+			var borde = document.createElement("div");
+			borde.setAttribute("class","card h-100");
+			var cuerpo = document.createElement("div");
+			cuerpo.setAttribute("class","card-body");
+			var imagen = document.createElement("img");
+			imagen.setAttribute("class","card-img");
+			imagen.setAttribute("width","750");
+			imagen.setAttribute("heigh","200");
+			/* ESTA LINEA CAMBIA EL ENLACE DE LA FOTO DE LAS TARJETAS*/ 
+			//imagen.setAttribute("src","img/"+production.value.title+".jpg");
+			imagen.setAttribute("src","img/Portada.jpg");
+			imagen.setAttribute("alt",actor.value.name);
+			/* ESTAS LINEAS SON PARA LA NACIONALIDAD DEL ACTOR */
+			var nombre = document.createElement("p");
+			nombre.setAttribute("class","card-text cajaTitulo");
+			nombre.appendChild(document.createTextNode("Nombre:"));
+			var nombreDescript = document.createElement("p");
+			nombreDescript.setAttribute("class","card-text cajaDescripcion");
+			nombreDescript.appendChild(document.createTextNode(nombreCompleto));
+			/* ESTAS LINEAS SON PARA LA FECHA DE NACIMIENTO DEL ACTOR */
+			var nacimiento = document.createElement("p");
+			nacimiento.setAttribute("class","card-text cajaTitulo");
+			nacimiento.appendChild(document.createTextNode("Fecha de nacimiento:"));
+			var nacimientoDescript = document.createElement("p");
+			nacimientoDescript.setAttribute("class","card-text cajaDescripcion");
+			nacimientoDescript.appendChild(document.createTextNode(actor.value.born));			
+			
+			//Se crea la estructura de las tarjetas con appendChild
+			contenido.appendChild(tarjeta);
+			tarjeta.appendChild(borde);
+			borde.appendChild(cuerpo);
+			cuerpo.appendChild(imagen);	
+			cuerpo.appendChild(nombre);
+			cuerpo.appendChild(nombreDescript);
+			cuerpo.appendChild(nacimiento);
+			cuerpo.appendChild(nacimientoDescript);
+
+			var film = document.createElement("p");
+			film.setAttribute("class","card-text cajaTitulo");
+			film.appendChild(document.createTextNode("Producciones en las que ha participado:"));
+			cuerpo.appendChild(film);
+			//Muestra las producciones en las que esta asignado el actor
+			var productions = video.getProductionsActor(actor.value);
+			var production = productions.next();
+			while (production.done !== true){
+				var filmDescript = document.createElement("p");
+				filmDescript.setAttribute("class","card-text cajaDescripcion");
+				filmDescript.appendChild(document.createTextNode("Titulo: " + production.value.title + ". Papel: "+production.papel));
+				cuerpo.appendChild(filmDescript);
+				//Pasa a la siguiente produccion del actor
+				production = productions.next();
+			}//Fin del while iterador de producciones de un actor
+
+			encontrado = true;
+		}//Fin del if principal del while
+		//Pasamos al siguiente actor
+		actor = actores.next();
+	}//Fin del while iterador de actores
+
+}//Fin de showActor
 
 //Dado un director, muestra toda su información relacionada, incluida sus producciones
 function showDirector(){
+	//Quita el titulo de la zona
+	var tituloContenido = document.getElementById("tituloZona");
+	tituloContenido.innerHTML = this.value;
 
-} 
+	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
+	var migas = document.getElementById("breadcrumb");
+	//Se quita al ultimo enlace la clase active
+	migas.lastChild.setAttribute("class","breadcrumb-item");
+	var actual = document.createElement("li");
+	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("aria-current","page");
+	actual.appendChild(document.createTextNode(this.value));
+	migas.appendChild(actual);
+
+	//Se selecciona la zona donde va a ir el nuevo contenido
+	var contenido = document.getElementById("tarjetasZona");
+	//QUITA TODO EL CONTENIDO QUE HAYA EN LA VARIABLE CONTENIDO
+	while (contenido.firstChild) {
+		contenido.removeChild(contenido.firstChild);
+	}
+
+	//SE PONE EL NUEVO CONTENIDO QUE TIENE QUE SER LA PRODUCCION SELECCIONADA
+	//Recuperamos del array de actores el objeto person que tenga el mismo nombre apellidos que el seleccionado
+	var encontrado = false;
+	var directores = video.directors;
+	var director = directores.next();
+	while ((director.done !== true) && (!encontrado)){
+		//Si coincide el name, lastName1 y lastName2 con el this.value es el actor seleccionado
+		var nombreCompleto = director.value.name +" "+ director.value.lastName1;
+		if (director.value.lastName2 != null) {
+			nombreCompleto += " " + director.value.lastName2
+		}
+		if (nombreCompleto == this.value){
+			//Si coincide nombre de la produccion con el valor del boton muestra la informacion
+			//Crea las tarjetas de las producciones en la zona central
+			var tarjeta = document.createElement("div");
+			tarjeta.setAttribute("class","col-lg-12 col-md-12 mb-4");
+			var borde = document.createElement("div");
+			borde.setAttribute("class","card h-100");
+			var cuerpo = document.createElement("div");
+			cuerpo.setAttribute("class","card-body");
+			var imagen = document.createElement("img");
+			imagen.setAttribute("class","card-img");
+			imagen.setAttribute("width","750");
+			imagen.setAttribute("heigh","200");
+			/* ESTA LINEA CAMBIA EL ENLACE DE LA FOTO DE LAS TARJETAS*/ 
+			//imagen.setAttribute("src","img/"+director.value.title+".jpg");
+			imagen.setAttribute("src","img/Portada.jpg");
+			imagen.setAttribute("alt",director.value.name);
+			/* ESTAS LINEAS SON PARA LA NACIONALIDAD DEL ACTOR */
+			var nombre = document.createElement("p");
+			nombre.setAttribute("class","card-text cajaTitulo");
+			nombre.appendChild(document.createTextNode("Nombre:"));
+			var nombreDescript = document.createElement("p");
+			nombreDescript.setAttribute("class","card-text cajaDescripcion");
+			nombreDescript.appendChild(document.createTextNode(nombreCompleto));
+			/* ESTAS LINEAS SON PARA LA FECHA DE NACIMIENTO DEL DIRECTOR */
+			var nacimiento = document.createElement("p");
+			nacimiento.setAttribute("class","card-text cajaTitulo");
+			nacimiento.appendChild(document.createTextNode("Fecha de nacimiento:"));
+			var nacimientoDescript = document.createElement("p");
+			nacimientoDescript.setAttribute("class","card-text cajaDescripcion");
+			nacimientoDescript.appendChild(document.createTextNode(director.value.born));			
+			
+			//Se crea la estructura de las tarjetas con appendChild
+			contenido.appendChild(tarjeta);
+			tarjeta.appendChild(borde);
+			borde.appendChild(cuerpo);
+			cuerpo.appendChild(imagen);	
+			cuerpo.appendChild(nombre);
+			cuerpo.appendChild(nombreDescript);
+			cuerpo.appendChild(nacimiento);
+			cuerpo.appendChild(nacimientoDescript);
+
+			var film = document.createElement("p");
+			film.setAttribute("class","card-text cajaTitulo");
+			film.appendChild(document.createTextNode("Producciones que ha dirigido:"));
+			cuerpo.appendChild(film);
+			//Muestra las producciones en las que esta asignado el actor
+			var productions = video.getProductionsDirector(director.value);
+			var production = productions.next();
+			while (production.done !== true){
+				var filmDescript = document.createElement("p");
+				filmDescript.setAttribute("class","card-text cajaDescripcion");
+				filmDescript.appendChild(document.createTextNode("Titulo: " + production.value.title));
+				cuerpo.appendChild(filmDescript);
+				//Pasa a la siguiente produccion del actor
+				production = productions.next();
+			}//Fin del while iterador de producciones de un actor
+
+			encontrado = true;
+		}//Fin del if principal del while
+		//Pasamos al siguiente director
+		director = directores.next();
+	}//Fin del while iterador de directores
+}//Fin de showDirector
 
 //Dado una categoría, director o actor, muestra el listado de sus producciones.
 function showProductions(){
@@ -613,14 +802,14 @@ function showProductions(){
         //Pasa a la siguiente categoria
 		categoria = categorias.next();
 	}//FIn del while iterador
-
+	
 }//Fin de showProductions
 
 //Muestra la información de una producción, incluida su director y sus actores participantes.
 function showProduction(){
-	//Cambia el titulo de la zona
+	//Quita el titulo de la zona
 	var tituloContenido = document.getElementById("tituloZona");
-	tituloContenido.remove(this);
+	tituloContenido.innerHTML = "";
 
 	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
 	var migas = document.getElementById("breadcrumb");
@@ -776,8 +965,9 @@ function showProduction(){
 		}//Fin del if
 		//Pasa a la siguiente produccion
 		produccion = producciones.next();
+		
 	}//Fin del while iterador
-
+	
 	
 }//Fin de showProduction
 
