@@ -4,6 +4,14 @@
 
 Autor - Guillermo Rodriguez Moraga
 
+
+
+Version 0.2.2
+- Ejercicio 3
+    - Fichero js/vs.js
+        - Se han añadido cambios en la interfaz
+        - Se han añadido las funciones showActors y showDirectors
+
 Version 0.2.1
 - Ejercicio 3
     - Fichero js/vs.js

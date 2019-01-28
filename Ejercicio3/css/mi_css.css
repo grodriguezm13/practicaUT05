@@ -1,21 +1,33 @@
 body {
-    padding-top: 80px;
-  }
+  padding-top: 80px;
+}
   
-  @media (min-width: 992px) {
-    body {
-      padding-top: 82px;
-    }
+@media (min-width: 992px) {
+  body {
+    padding-top: 82px;
   }
+}
 
-  span.card-text {
-    position: absolute;
-    top: 8px;
-    right: -9px;
-    font-size: 18px;
-    color: white;
-    border: 3px solid #0e0f0f;
-    background-color: #343a40;
-    padding: 0 10px;
-    border-radius: 15px;
+span.card-text {
+  position: absolute;
+  top: 8px;
+  right: -9px;
+  font-size: 18px;
+  color: white;
+  border: 3px solid #0e0f0f;
+  background-color: #343a40;
+  padding: 0 10px;
+  border-radius: 15px;
+}
+
+p.cajaTitulo{
+  color: darkblue;
+}
+
+p.cajaDescripcion{
+  text-indent: 10%;
+}
+
+button.list-group-item{
+  color: #007bff;
 }

@@ -215,8 +215,24 @@ function showHomePage(){
 	//Selecciona el titulo central y le cambia el nombre
 	var tituloContenido = document.getElementById("tituloZona");
 	tituloContenido.innerHTML = "Categorias del sistema";
+
+	//Selecciona la zona de las migas de pan y quita el contenido para añadir el nuevo
+	var migas = document.getElementById("breadcrumb");
+	while (migas.firstChild) {
+		migas.removeChild(migas.firstChild);
+	}
+	var liMigas = document.createElement("li");
+	liMigas.setAttribute("class","breadcrumb-item active");
+	liMigas.setAttribute("aria-current","page");
+	liMigas.appendChild(document.createTextNode("Inicio"));
+	migas.appendChild(liMigas);
+
 	//Selecciona la zona central donde van las tarjetas de las categorias
 	var tarjetas = document.getElementById("tarjetasZona");
+	//QUITA TODO EL CONTENIDO QUE HAYA EN LA VARIABLE TARJETAS
+	while (tarjetas.firstChild) {
+		tarjetas.removeChild(tarjetas.firstChild);
+	}
 	//Con un iterador recorremos todas las categorias del sistema
 	//Y creamos el menu lateral mientras haya categorias
 	//Al ser singleton e llama al mismo objeto
@@ -287,7 +303,7 @@ function categoriesMenuPopulate(){
 	while (categoria.done !== true){
 		//Crea las opciones del menu lateral
 		var enlace = document.createElement("button");
-		enlace.setAttribute("class","list-group-item btn btn-link");
+		enlace.setAttribute("class","list-group-item btn btn-primary");
 		enlace.setAttribute("value",categoria.value.name);
 		enlace.appendChild(document.createTextNode(categoria.value.name));
 		enlace.addEventListener("click", showProductions);
@@ -296,18 +312,188 @@ function categoriesMenuPopulate(){
         //Pasa a la siguiente categoria
 		categoria = categorias.next();
 	}//FIn del while iterador
+	//Añade funciones a los bntones de actores y directores
+	var btnAct = document.getElementById("btnActores");
+	var btnDir = document.getElementById("btnDirectores");
+	btnAct.addEventListener("click", showActors);
+	btnDir.addEventListener("click", showDirectors);
 
 }//Fin de showHomePage
 
 //Muestra un listado con los actores del sistema.
 function showActors(){
+	//Cambia el titulo de la pagina principal
+	var tituloContenido = document.getElementById("tituloZona");
+	//El valor this.value lo recoge del valor del boton que hayamos pulsado
+	tituloContenido.innerHTML = "Actores del sistema";
 
-}
+	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
+	var migas = document.getElementById("breadcrumb");
+	while (migas.firstChild) {
+		migas.removeChild(migas.firstChild);
+	}
+	var liMigas = document.createElement("li");
+	liMigas.setAttribute("class","breadcrumb-item");
+	liMigas.setAttribute("aria-current","page");
+	liMigas.appendChild(document.createTextNode("Inicio"));
+	migas.appendChild(liMigas);
+	var actual = document.createElement("li");
+	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("aria-current","page");
+	actual.appendChild(document.createTextNode("Actores"));
+	migas.appendChild(actual);
+
+	//Se selecciona la zona donde va a ir el nuevo contenido
+	var contenido = document.getElementById("tarjetasZona");
+
+	//QUITA TODO EL CONTENIDO QUE HAYA EN LA VARIABLE CONTENIDO
+	while (contenido.firstChild) {
+		contenido.removeChild(contenido.firstChild);
+	}
+
+	//SE PONE EL NUEVO CONTENIDO QUE TIENE QUE SER TODOS LOS ACTORES DEL SISTEMA
+	video = VideoSystem.getInstance();
+	var actores = video.actors;
+	var actor = actores.next();
+	while (actor.done !== true){
+		//Crea las tarjetas de las producciones en la zona central
+		var tarjeta = document.createElement("div");
+		tarjeta.setAttribute("class","col-lg-12 col-md-12 mb-4");
+		var borde = document.createElement("div");
+		borde.setAttribute("class","card h-100");
+		var cuerpo = document.createElement("div");
+		cuerpo.setAttribute("class","card-body");
+		var imagen = document.createElement("img");
+		imagen.setAttribute("class","card-img");
+		imagen.setAttribute("width","750");
+		imagen.setAttribute("heigh","200");
+		/* ESTA LINEA CAMBIA EL ENLACE DE LA FOTO DE LAS TARJETAS*/ 
+		//imagen.setAttribute("src","img/"+actor.value.name+".jpg");
+		imagen.setAttribute("src","img/Portada.jpg");
+		imagen.setAttribute("alt",actor.value.name);
+		var buttonTitle = document.createElement("button");
+		//id que sirve para recoger la produccion pulsada en el evento
+		buttonTitle.setAttribute("id","botonActor");
+		buttonTitle.setAttribute("type","button");
+		buttonTitle.setAttribute("value",actor.value.name);
+		buttonTitle.setAttribute("class","btn btn-link btn-lg btn-block");
+		var nombre = actor.value.name+" "+actor.value.lastName1;
+		if (actor.value.lastName2 != null) {
+			nombre += " " + actor.value.lastName2
+		}
+		buttonTitle.appendChild(document.createTextNode(nombre));	
+		var valoracion = document.createElement("div");
+		valoracion.setAttribute("class","card-footer");
+		var estrellas = document.createElement("small");
+		estrellas.setAttribute("class","text-muted");
+		/* ESTA LINEA CAMBIA LAS ESTRELLAS QUE SE MUESTRAN EN LAS TARJETAS (PROXIMA VERSION)?*/ 
+		estrellas.appendChild(document.createTextNode('Valoracion'));
+		
+		//Se crea la estructura de las tarjetas con appendChild
+		contenido.appendChild(tarjeta);
+		tarjeta.appendChild(borde);
+		borde.appendChild(cuerpo);
+		cuerpo.appendChild(imagen);
+		cuerpo.appendChild(buttonTitle);
+		cuerpo.appendChild(valoracion);
+		valoracion.appendChild(estrellas);
+	
+		//Añade eventos al hacer click sobre la imagen o sobre el nombre de la categoria
+		buttonTitle.addEventListener("click", showActor);
+		//imagen.addEventListener("click", showActor);			
+
+		//Pasa al siguiente actor
+		actor = actores.next();
+	}//Fin del while
+
+}//Fin de showActors
 
 //Muestra un listado con los directores del sistema.
 function showDirectors(){
+	//Cambia el titulo de la pagina principal
+	var tituloContenido = document.getElementById("tituloZona");
+	//El valor this.value lo recoge del valor del boton que hayamos pulsado
+	tituloContenido.innerHTML = "Directores del sistema";
 
-} 
+	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
+	var migas = document.getElementById("breadcrumb");
+	while (migas.firstChild) {
+		migas.removeChild(migas.firstChild);
+	}
+	var liMigas = document.createElement("li");
+	liMigas.setAttribute("class","breadcrumb-item");
+	liMigas.setAttribute("aria-current","page");
+	liMigas.appendChild(document.createTextNode("Inicio"));
+	migas.appendChild(liMigas);
+	var actual = document.createElement("li");
+	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("aria-current","page");
+	actual.appendChild(document.createTextNode("Directores"));
+	migas.appendChild(actual);
+
+	//Se selecciona la zona donde va a ir el nuevo contenido
+	var contenido = document.getElementById("tarjetasZona");
+
+	//QUITA TODO EL CONTENIDO QUE HAYA EN LA VARIABLE CONTENIDO
+	while (contenido.firstChild) {
+		contenido.removeChild(contenido.firstChild);
+	}
+
+	//SE PONE EL NUEVO CONTENIDO QUE TIENE QUE SER TODOS LOS ACTORES DEL SISTEMA
+	video = VideoSystem.getInstance();
+	var directores = video.directors;
+	var director = directores.next();
+	while (director.done !== true){
+		//Crea las tarjetas de las producciones en la zona central
+		var tarjeta = document.createElement("div");
+		tarjeta.setAttribute("class","col-lg-12 col-md-12 mb-4");
+		var borde = document.createElement("div");
+		borde.setAttribute("class","card h-100");
+		var cuerpo = document.createElement("div");
+		cuerpo.setAttribute("class","card-body");
+		var imagen = document.createElement("img");
+		imagen.setAttribute("class","card-img");
+		imagen.setAttribute("width","750");
+		imagen.setAttribute("heigh","200");
+		/* ESTA LINEA CAMBIA EL ENLACE DE LA FOTO DE LAS TARJETAS*/ 
+		//imagen.setAttribute("src","img/"+director.value.name+".jpg");
+		imagen.setAttribute("src","img/Portada.jpg");
+		imagen.setAttribute("alt",director.value.name);
+		var buttonTitle = document.createElement("button");
+		//id que sirve para recoger la produccion pulsada en el evento
+		buttonTitle.setAttribute("id","botonActor");
+		buttonTitle.setAttribute("type","button");
+		buttonTitle.setAttribute("value",director.value.name);
+		buttonTitle.setAttribute("class","btn btn-link btn-lg btn-block");
+		var nombre = director.value.name+" "+director.value.lastName1;
+		if (director.value.lastName2 != null) {
+			nombre += " " + director.value.lastName2
+		}
+		buttonTitle.appendChild(document.createTextNode(nombre));	
+		var valoracion = document.createElement("div");
+		valoracion.setAttribute("class","card-footer");
+		var estrellas = document.createElement("small");
+		estrellas.setAttribute("class","text-muted");
+		/* ESTA LINEA CAMBIA LAS ESTRELLAS QUE SE MUESTRAN EN LAS TARJETAS (PROXIMA VERSION)?*/ 
+		estrellas.appendChild(document.createTextNode('Valoracion'));
+		
+		//Se crea la estructura de las tarjetas con appendChild
+		contenido.appendChild(tarjeta);
+		tarjeta.appendChild(borde);
+		borde.appendChild(cuerpo);
+		cuerpo.appendChild(imagen);
+		cuerpo.appendChild(buttonTitle);
+		cuerpo.appendChild(valoracion);
+		valoracion.appendChild(estrellas);
+
+		//Añade eventos al hacer click sobre la imagen o sobre el nombre de la categoria
+		buttonTitle.addEventListener("click", showDirector);
+		//imagen.addEventListener("click", showDirector);			
+
+		//Pasa al siguiente actor
+		director = directores.next();
+	}//Fin del while
+} //Fin de showDirectors
 
 //Dado un actor muestra toda su información relacionada, incluida sus producciones.
 function showActor(){
@@ -325,6 +511,23 @@ function showProductions(){
 	var tituloContenido = document.getElementById("tituloZona");
 	//El valor this.value lo recoge del valor del boton que hayamos pulsado
 	tituloContenido.innerHTML = this.value;
+
+	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
+	var migas = document.getElementById("breadcrumb");
+	while (migas.firstChild) {
+		migas.removeChild(migas.firstChild);
+	}
+	var liMigas = document.createElement("li");
+	liMigas.setAttribute("class","breadcrumb-item");
+	liMigas.setAttribute("aria-current","page");
+	liMigas.appendChild(document.createTextNode("Inicio"));
+	migas.appendChild(liMigas);
+	var actual = document.createElement("li");
+	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("aria-current","page");
+	actual.appendChild(document.createTextNode(this.value));
+	migas.appendChild(actual);
+
 	//Se selecciona la zona donde va a ir el nuevo contenido
 	var contenido = document.getElementById("tarjetasZona");
 
@@ -399,7 +602,7 @@ function showProductions(){
 			
 				//Añade eventos al hacer click sobre la imagen o sobre el nombre de la categoria
 				buttonTitle.addEventListener("click", showProduction);
-				imagen.addEventListener("click", showProduction);	
+				//imagen.addEventListener("click", showProduction);	
 
 				production = productions.next();
 			}//fin del while iterador
@@ -419,9 +622,18 @@ function showProduction(){
 	var tituloContenido = document.getElementById("tituloZona");
 	tituloContenido.remove(this);
 
+	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
+	var migas = document.getElementById("breadcrumb");
+	//Se quita al ultimo enlace la clase active
+	migas.lastChild.setAttribute("class","breadcrumb-item");
+	var actual = document.createElement("li");
+	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("aria-current","page");
+	actual.appendChild(document.createTextNode(this.value));
+	migas.appendChild(actual);
+
 	//Se selecciona la zona donde va a ir el nuevo contenido
 	var contenido = document.getElementById("tarjetasZona");
-
 	//QUITA TODO EL CONTENIDO QUE HAYA EN LA VARIABLE CONTENIDO
 	while (contenido.firstChild) {
 		contenido.removeChild(contenido.firstChild);
@@ -441,7 +653,7 @@ function showProduction(){
 			borde.setAttribute("class","card h-100");
 			var cuerpo = document.createElement("div");
 			cuerpo.setAttribute("class","card-body");
-			var titulo = document.createElement("h5");
+			var titulo = document.createElement("h2");
 			titulo.setAttribute("class","card-title");
 			titulo.appendChild(document.createTextNode(produccion.value.title));
 			var imagen = document.createElement("img");
@@ -452,41 +664,71 @@ function showProduction(){
 			//imagen.setAttribute("src","img/"+production.value.title+".jpg");
 			imagen.setAttribute("src","img/Portada.jpg");
 			imagen.setAttribute("alt",produccion.value.title);
+			/* ESTAS LINEAS SON PARA LA NACIONALIDAD DE LA PRODUCCION */
 			var nationality = document.createElement("p");
-			nationality.setAttribute("class","card-text");
-			/* ESTA LINEA CAMBIA LA NACIONALIDAD DE LA PRODUCCIO */ 
-			nationality.appendChild(document.createTextNode("Nacionalidad: " + produccion.value.nationality));
+			nationality.setAttribute("class","card-text cajaTitulo");
+			nationality.appendChild(document.createTextNode("Nacionalidad:"));
+			var nationalityDescript = document.createElement("p");
+			nationalityDescript.setAttribute("class","card-text cajaDescripcion");
+			nationalityDescript.appendChild(document.createTextNode(produccion.value.nationality));
+			/* ESTAS LINEAS SON PARA LA FECHA DE LA PRODUCCION */
 			var publication = document.createElement("p");
-			publication.setAttribute("class","card-text");
-			/* ESTA LINEA CAMBIA LA FECHA DE LA PRODUCCIO */ 
-			publication.appendChild(document.createTextNode("Fecha de publicacion: " + produccion.value.publication));
+			publication.setAttribute("class","card-text cajaTitulo");
+			publication.appendChild(document.createTextNode("Fecha de publicacion:"));
+			var publicationDescript = document.createElement("p");
+			publicationDescript.setAttribute("class","card-text cajaDescripcion");
+			publicationDescript.appendChild(document.createTextNode(produccion.value.publication));
+			/* ESTAS LINEAS SON PARA LA SIPNOSIS DE LA PRODUCCION */
 			var synopsis = document.createElement("p");
-			synopsis.setAttribute("class","card-text");
-			/* ESTA LINEA CAMBIA LA SIPNOSIS DE LA PRODUCCIO */ 
-			synopsis.appendChild(document.createTextNode("Sipnosis: " + produccion.value.synopsis));
+			synopsis.setAttribute("class","card-text cajaTitulo");
+			synopsis.appendChild(document.createTextNode("Sipnosis:"));
+			var synopsisDescript = document.createElement("p");
+			synopsisDescript.setAttribute("class","card-text cajaDescripcion");
+			synopsisDescript.appendChild(document.createTextNode(produccion.value.synopsis));
 			//Si la produccion es una movie tendra unos parametros distintos a las series
 			if(produccion.value instanceof Movie){
 				//Si es distinto de null pone el recurso de la produccion
 				if(produccion.value.resource != null){
-					var resource = document.createElement("p");
-					resource.setAttribute("class","card-text");
-					/* ESTA LINEA CAMBIA LA SIPNOSIS DE LA PRODUCCIO */ 
-					resource.appendChild(document.createTextNode("Recurso: " + produccion.value.resource));
+					/* ESTAS LINEAS SON PARA EL RECURSO DE LA PRODUCCION */
+					var duration = document.createElement("p");
+					duration.setAttribute("class","card-text cajaTitulo");
+					duration.appendChild(document.createTextNode("Duracion: "));
+					var durationDescript = document.createElement("p");
+					durationDescript.setAttribute("class","card-text cajaDescripcion");
+					durationDescript.appendChild(document.createTextNode(produccion.value.resource.duration+" minutos"));
+					var audio = document.createElement("p");
+					audio.setAttribute("class","card-text cajaTitulo");
+					audio.appendChild(document.createTextNode("Audio: "));
+					var audioDescript = document.createElement("p");
+					audioDescript.setAttribute("class","card-text cajaDescripcion");
+					audioDescript.appendChild(document.createTextNode(produccion.value.resource.audios));
+					var subtitles = document.createElement("p");
+					subtitles.setAttribute("class","card-text cajaTitulo");
+					subtitles.appendChild(document.createTextNode("Subtitulos: "));
+					var subtitlesDescript = document.createElement("p");
+					subtitlesDescript.setAttribute("class","card-text cajaDescripcion");
+					subtitlesDescript.appendChild(document.createTextNode(produccion.value.resource.subtitles));
 				}
 				//Si es distinto de null pone la localizacion de la produccion
 				if(produccion.value.locations != null){
+					/* ESTAS LINEAS SON PARA LA LOCALIZCION DE LA PRODUCCION */
 					var locations = document.createElement("p");
-					locations.setAttribute("class","card-text");
-					/* ESTA LINEA CAMBIA LA SIPNOSIS DE LA PRODUCCIO */ 
-					locations.appendChild(document.createTextNode("Localizacion: " + produccion.value.locations));
+					locations.setAttribute("class","card-text cajaTitulo");
+					locations.appendChild(document.createTextNode("Localizacion:"));
+					var locationsDescript = document.createElement("p");
+					locationsDescript.setAttribute("class","card-text cajaDescripcion");
+					locationsDescript.appendChild(document.createTextNode(produccion.value.locations));
 				}
 			}else{
 				//Si es una serie y tiene temporadas las muestra
 				if(produccion.value.seasons != null){
+					/* ESTA LINEA CAMBIA LAS DE LA PRODUCCION SI ES UNA SERIE */ 
 					var season = document.createElement("p");
-					season.setAttribute("class","card-text");
-					/* ESTA LINEA CAMBIA LA SIPNOSIS DE LA PRODUCCIO */ 
-					season.appendChild(document.createTextNode("Temporadas: " + produccion.value.seasons));
+					season.setAttribute("class","card-text cajaTitulo");
+					season.appendChild(document.createTextNode("Temporadas:"));
+					var seasonDescrip = document.createElement("p");
+					seasonDescrip.setAttribute("class","card-text cajaDescripcion");
+					seasonDescrip.appendChild(document.createTextNode(produccion.value.seasons));
 				}
 			}//Fin del if del instanceof
 			
@@ -497,22 +739,36 @@ function showProduction(){
 			cuerpo.appendChild(imagen);
 			cuerpo.appendChild(titulo);		
 			cuerpo.appendChild(nationality);
+			cuerpo.appendChild(nationalityDescript);
 			cuerpo.appendChild(publication);
+			cuerpo.appendChild(publicationDescript);
 			cuerpo.appendChild(synopsis);
+			cuerpo.appendChild(synopsisDescript);
 			if(produccion.value.resource != null){
-				cuerpo.appendChild(resource);
+				cuerpo.appendChild(duration);
+				cuerpo.appendChild(durationDescript);
+				cuerpo.appendChild(audio);
+				cuerpo.appendChild(audioDescript);
+				cuerpo.appendChild(subtitles);
+				cuerpo.appendChild(subtitlesDescript);
 			}
 			if(produccion.value.locations != null){
 				cuerpo.appendChild(locations);
+				cuerpo.appendChild(locationsDescript);
 			}
+			
 			//Para mostrar los actores de la produccion necesitamos otro iterador
 			var elenco = video.getCast(produccion.value);
 			var actor = elenco.next();
-			while (actor.done !== true){
-				var act = document.createElement("p");
-				act.setAttribute("class","card-text");
-				act.appendChild(document.createTextNode("Actor: " + actor.value.name + ". Papel: "+ actor.papel + ". Principal: " + actor.principal));
-				cuerpo.appendChild(act);		
+			var act = document.createElement("p");
+			act.setAttribute("class","card-text cajaTitulo");
+			act.appendChild(document.createTextNode("Reparto"));
+			cuerpo.appendChild(act);
+			while (actor.done !== true){	
+				var actDescript = document.createElement("p");
+				actDescript.setAttribute("class","card-text cajaDescripcion");
+				actDescript.appendChild(document.createTextNode(actor.value.name + " "+ actor.value.lastName1 + " " + actor.value.lastName2 + ". Papel: "+ actor.papel + ". Principal: " + actor.principal));
+				cuerpo.appendChild(actDescript);		
 				actor = elenco.next();
 			}
 			
@@ -535,6 +791,6 @@ function init(){
 	initPopulate();
 	showHomePage();
 	categoriesMenuPopulate();
-}
+}//Fin de init
 
 window.onload = init;
