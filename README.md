@@ -4,6 +4,15 @@
 
 Autor - Guillermo Rodriguez Moraga
 
+Version 0.2.4
+- Ejercicio 3
+    - Fichero js/vs.js
+        - Se han añadido botones para acceder a los actores desde una produccion
+        - Se han añadido botones para acceder a las producciones de un actor
+        - Se han añadido botones para acceder a las producciones de un director
+        - Las producciones ahora si muestran quien las ha dirigido
+        - La migas de pan ahora si retroceden 
+
 Version 0.2.3
 - Ejercicio 3
     - Fichero js/vs.js

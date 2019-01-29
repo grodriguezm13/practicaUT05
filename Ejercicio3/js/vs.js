@@ -222,7 +222,7 @@ function showHomePage(){
 		migas.removeChild(migas.firstChild);
 	}
 	var liMigas = document.createElement("li");
-	liMigas.setAttribute("class","breadcrumb-item active");
+	liMigas.setAttribute("class","breadcrumb-item btn btn-sm active");
 	liMigas.setAttribute("aria-current","page");
 	liMigas.appendChild(document.createTextNode("Inicio"));
 	migas.appendChild(liMigas);
@@ -333,12 +333,13 @@ function showActors(){
 		migas.removeChild(migas.firstChild);
 	}
 	var liMigas = document.createElement("li");
-	liMigas.setAttribute("class","breadcrumb-item");
+	liMigas.setAttribute("class","breadcrumb-item btn btn-sm");
 	liMigas.setAttribute("aria-current","page");
 	liMigas.appendChild(document.createTextNode("Inicio"));
+	liMigas.addEventListener("click",showHomePage);
 	migas.appendChild(liMigas);
 	var actual = document.createElement("li");
-	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("class","breadcrumb-item btn btn-sm active");
 	actual.setAttribute("aria-current","page");
 	actual.appendChild(document.createTextNode("Actores"));
 	migas.appendChild(actual);
@@ -421,12 +422,13 @@ function showDirectors(){
 		migas.removeChild(migas.firstChild);
 	}
 	var liMigas = document.createElement("li");
-	liMigas.setAttribute("class","breadcrumb-item");
+	liMigas.setAttribute("class","breadcrumb-item btn btn-sm");
 	liMigas.setAttribute("aria-current","page");
 	liMigas.appendChild(document.createTextNode("Inicio"));
+	liMigas.addEventListener("click",showHomePage);
 	migas.appendChild(liMigas);
 	var actual = document.createElement("li");
-	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("class","breadcrumb-item btn btn-sm active");
 	actual.setAttribute("aria-current","page");
 	actual.appendChild(document.createTextNode("Directores"));
 	migas.appendChild(actual);
@@ -503,10 +505,23 @@ function showActor(){
 
 	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
 	var migas = document.getElementById("breadcrumb");
-	//Se quita al ultimo enlace la clase active
-	migas.lastChild.setAttribute("class","breadcrumb-item");
+	while (migas.firstChild) {
+		migas.removeChild(migas.firstChild);
+	}
+	var liMigas = document.createElement("li");
+	liMigas.setAttribute("class","breadcrumb-item btn btn-sm");
+	liMigas.setAttribute("aria-current","page");
+	liMigas.appendChild(document.createTextNode("Inicio"));
+	liMigas.addEventListener("click",showHomePage);
+	migas.appendChild(liMigas);
+	var medio = document.createElement("li");
+	medio.setAttribute("class","breadcrumb-item btn btn-sm");
+	medio.setAttribute("aria-current","page");
+	medio.appendChild(document.createTextNode("Actores"));
+	medio.addEventListener("click",showActors);
+	migas.appendChild(medio);
 	var actual = document.createElement("li");
-	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("class","breadcrumb-item btn btn-sm active");
 	actual.setAttribute("aria-current","page");
 	actual.appendChild(document.createTextNode(this.value));
 	migas.appendChild(actual);
@@ -581,7 +596,14 @@ function showActor(){
 			while (production.done !== true){
 				var filmDescript = document.createElement("p");
 				filmDescript.setAttribute("class","card-text cajaDescripcion");
-				filmDescript.appendChild(document.createTextNode("Titulo: " + production.value.title + ". Papel: "+production.papel));
+				filmDescript.appendChild(document.createTextNode("Titulo: "));
+				var proBtn = document.createElement("button");
+				proBtn.setAttribute("class","card-text btn btn-link ");
+				proBtn.setAttribute("value",production.value.title);
+				proBtn.appendChild(document.createTextNode(production.value.title));
+				proBtn.addEventListener("click", showProduction); 
+				filmDescript.appendChild(proBtn);
+				filmDescript.appendChild(document.createTextNode(". Papel: "+production.papel));
 				cuerpo.appendChild(filmDescript);
 				//Pasa a la siguiente produccion del actor
 				production = productions.next();
@@ -603,10 +625,23 @@ function showDirector(){
 
 	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
 	var migas = document.getElementById("breadcrumb");
-	//Se quita al ultimo enlace la clase active
-	migas.lastChild.setAttribute("class","breadcrumb-item");
+	while (migas.firstChild) {
+		migas.removeChild(migas.firstChild);
+	}
+	var liMigas = document.createElement("li");
+	liMigas.setAttribute("class","breadcrumb-item btn btn-sm");
+	liMigas.setAttribute("aria-current","page");
+	liMigas.appendChild(document.createTextNode("Inicio"));
+	liMigas.addEventListener("click",showHomePage);
+	migas.appendChild(liMigas);
+	var medio = document.createElement("li");
+	medio.setAttribute("class","breadcrumb-item btn btn-sm");
+	medio.setAttribute("aria-current","page");
+	medio.appendChild(document.createTextNode("Directores"));
+	medio.addEventListener("click",showDirectors);
+	migas.appendChild(medio);
 	var actual = document.createElement("li");
-	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("class","breadcrumb-item btn btn-sm active");
 	actual.setAttribute("aria-current","page");
 	actual.appendChild(document.createTextNode(this.value));
 	migas.appendChild(actual);
@@ -681,7 +716,13 @@ function showDirector(){
 			while (production.done !== true){
 				var filmDescript = document.createElement("p");
 				filmDescript.setAttribute("class","card-text cajaDescripcion");
-				filmDescript.appendChild(document.createTextNode("Titulo: " + production.value.title));
+				filmDescript.appendChild(document.createTextNode("Titulo: "));
+				var proBtn = document.createElement("button");
+				proBtn.setAttribute("class","card-text btn btn-link ");
+				proBtn.setAttribute("value",production.value.title);
+				proBtn.appendChild(document.createTextNode(production.value.title));
+				proBtn.addEventListener("click", showProduction); 
+				filmDescript.appendChild(proBtn);
 				cuerpo.appendChild(filmDescript);
 				//Pasa a la siguiente produccion del actor
 				production = productions.next();
@@ -707,12 +748,12 @@ function showProductions(){
 		migas.removeChild(migas.firstChild);
 	}
 	var liMigas = document.createElement("li");
-	liMigas.setAttribute("class","breadcrumb-item");
-	liMigas.setAttribute("aria-current","page");
+	liMigas.setAttribute("class","breadcrumb-item btn btn-sm");
 	liMigas.appendChild(document.createTextNode("Inicio"));
+	liMigas.addEventListener("click",showHomePage);
 	migas.appendChild(liMigas);
 	var actual = document.createElement("li");
-	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("class","breadcrumb-item btn btn-sm active");
 	actual.setAttribute("aria-current","page");
 	actual.appendChild(document.createTextNode(this.value));
 	migas.appendChild(actual);
@@ -797,7 +838,7 @@ function showProductions(){
 			}//fin del while iterador
 			//Variable para salir del bucle principal si encuentra la categoria
 			encontrado = true;
-		}//Fni del if que compara el nombre de la categoria con el valor del boton
+		}//Fin del if que compara el nombre de la categoria con el valor del boton
 		
         //Pasa a la siguiente categoria
 		categoria = categorias.next();
@@ -813,10 +854,24 @@ function showProduction(){
 
 	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
 	var migas = document.getElementById("breadcrumb");
-	//Se quita al ultimo enlace la clase active
-	migas.lastChild.setAttribute("class","breadcrumb-item");
+	var ultimo = document.getElementById("breadcrumb").lastChild;
+
+	//Selecciona la zona de las migas de pan, borra las anteriores y añade las nuevas
+	var migas = document.getElementById("breadcrumb");
+	while (migas.firstChild) {
+		migas.removeChild(migas.firstChild);
+	}
+	var liMigas = document.createElement("li");
+	liMigas.setAttribute("class","breadcrumb-item btn btn-sm");
+	liMigas.appendChild(document.createTextNode("Inicio"));
+	liMigas.addEventListener("click",showHomePage);
+	migas.appendChild(liMigas);
+	ultimo.setAttribute("class","breadcrumb-item btn btn-sm");
+	ultimo.setAttribute("value",ultimo.textContent);
+	ultimo.addEventListener("click",showHomePage);
+	migas.appendChild(ultimo);
 	var actual = document.createElement("li");
-	actual.setAttribute("class","breadcrumb-item active");
+	actual.setAttribute("class","breadcrumb-item btn btn-sm active");
 	actual.setAttribute("aria-current","page");
 	actual.appendChild(document.createTextNode(this.value));
 	migas.appendChild(actual);
@@ -945,6 +1000,47 @@ function showProduction(){
 				cuerpo.appendChild(locations);
 				cuerpo.appendChild(locationsDescript);
 			}
+
+			//Para mostrar el director de la produccion
+			var encontrado = false;
+			var directores = video.directors;
+			var director = directores.next();
+			//Recorre todos los directores del sistema
+			while ((director.done !== true) && (!encontrado)){
+				//Para cada director hace un iterador con sus producciones
+				var productions = video.getProductionsDirector(director.value);
+				var production = productions.next();
+				while ((production.done !== true) && (!encontrado)){
+					//Si el titulo de la production del iterador es igual al titulo de la produccion en la que estamos
+					//muestra en esta produccion que es el director
+					if(production.value.title == produccion.value.title){
+						var dir = document.createElement("p");
+						dir.setAttribute("class","card-text cajaTitulo");
+						dir.appendChild(document.createTextNode("Dirigida por:"));
+						cuerpo.appendChild(dir);
+						var dirDescript = document.createElement("p");
+						dirDescript.setAttribute("class","card-text cajaDescripcion");
+						var dirBtn = document.createElement("button");
+						dirBtn.setAttribute("class","card-text btn btn-link ");
+						var nombre = director.value.name+" "+ director.value.lastName1;
+						if (director.value.lastName2 != null) {
+							nombre += " " + director.value.lastName2
+						}
+						dirBtn.setAttribute("value",nombre);
+						dirBtn.appendChild(document.createTextNode(nombre)); 
+						dirBtn.addEventListener("click", showDirector);
+						dirDescript.appendChild(dirBtn);
+						cuerpo.appendChild(dirDescript);
+	
+						encontrado = true;
+					}
+					//Pasa a la siguiente production del director
+					production = productions.next();
+				}//FIn del while iterador de producciones de un director
+				
+				//Pasa al siguiente director
+				director = directores.next();
+			}//Fin del while iterador de directores
 			
 			//Para mostrar los actores de la produccion necesitamos otro iterador
 			var elenco = video.getCast(produccion.value);
@@ -956,7 +1052,17 @@ function showProduction(){
 			while (actor.done !== true){	
 				var actDescript = document.createElement("p");
 				actDescript.setAttribute("class","card-text cajaDescripcion");
-				actDescript.appendChild(document.createTextNode(actor.value.name + " "+ actor.value.lastName1 + " " + actor.value.lastName2 + ". Papel: "+ actor.papel + ". Principal: " + actor.principal));
+				var actBtn = document.createElement("button");
+				actBtn.setAttribute("class","card-text btn btn-link ");
+				var nombre = actor.value.name+" "+ actor.value.lastName1;
+				if (actor.value.lastName2 != null) {
+					nombre += " " + actor.value.lastName2
+				}
+				actBtn.setAttribute("value",nombre);
+				actBtn.appendChild(document.createTextNode(nombre)); 
+				actBtn.addEventListener("click", showActor);
+				actDescript.appendChild(actBtn);
+				actDescript.appendChild(document.createTextNode(". Papel: "+ actor.papel + ". Principal: " + actor.principal));
 				cuerpo.appendChild(actDescript);		
 				actor = elenco.next();
 			}
@@ -967,7 +1073,6 @@ function showProduction(){
 		produccion = producciones.next();
 		
 	}//Fin del while iterador
-	
 	
 }//Fin de showProduction
 
