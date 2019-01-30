@@ -1,8 +1,19 @@
 # UT05 DOM
 
-## Introduction
+## Introduccion
 
-Autor - Guillermo Rodriguez Moraga
+Sobre la práctica del ERP de la unidad anterior, debes utilizarla para mostrar su contenido en una página HTML utilizando el API de DOM
+
+## Autor
+
+Guillermo Rodriguez Moraga
+
+## Versiones
+
+Version 0.2.5
+- Ejercicio 3
+    - Fichero js/vs.js
+        - Se han corregido los retrocesos en las migas de pan 
 
 Version 0.2.4
 - Ejercicio 3
